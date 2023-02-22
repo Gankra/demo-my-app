@@ -13,7 +13,7 @@ with some basic Cargo.toml fields like "license" entered by hand, as well as REA
 All cargo-dist config/CI was defined by:
 
 ```sh
-cargo dist init --ci=github --install=shell --installer=powershell
+cargo dist init --ci=github --installer=shell --installer=powershell
 ```
 
 Releases are produced with:
