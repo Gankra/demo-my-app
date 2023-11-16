@@ -1,7 +1,7 @@
 [package]
 name = "demo-my-app"
 description = "my demo app"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 repository = "https://github.com/Gankra/demo-my-app"
 license = "MIT OR Apache-2.0"
