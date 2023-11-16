@@ -53,6 +53,7 @@ jobs:
       publishing: ${{ !github.event.pull_request }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AXO_RELEASES_TOKEN: ${{ secrets.AXO_RELEASES_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -184,6 +185,7 @@ jobs:
     if: ${{ needs.plan.outputs.publishing == 'true' }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AXO_RELEASES_TOKEN: ${{ secrets.AXO_RELEASES_TOKEN }}
     runs-on: "ubuntu-20.04"
     steps:
       - uses: actions/checkout@v4
@@ -208,24 +210,18 @@ jobs:
     runs-on: "ubuntu-20.04"
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AXO_RELEASES_TOKEN: ${{ secrets.AXO_RELEASES_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: "Download artifacts"
+      - name: Install cargo-dist
+        run: "cargo install --git https://github.com/axodotdev/cargo-dist/ --branch=http2 cargo-dist"
+      - name: Fetch artifacts
         uses: actions/download-artifact@v3
         with:
           name: artifacts
-          path: artifacts
-      - name: Cleanup
+          path: target/distrib/
+      - name: Announce Releases
         run: |
-          # Remove the granular manifests
-          rm artifacts/*-dist-manifest.json
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ needs.plan.outputs.tag }}
-          name: ${{ fromJson(needs.plan.outputs.val).announcement_title }}
-          body: ${{ fromJson(needs.plan.outputs.val).announcement_github_body }}
-          prerelease: ${{ fromJson(needs.plan.outputs.val).announcement_is_prerelease }}
-          artifacts: "artifacts/*"
+          cargo dist host --steps=announce ${{ needs.plan.outputs.tag-flag }}
