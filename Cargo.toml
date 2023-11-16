@@ -1,5 +1,5 @@
 [package]
-name = "my-app"
+name = "demo-my-app"
 description = "my demo app"
 version = "0.2.0"
 edition = "2021"
