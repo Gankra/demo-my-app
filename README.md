@@ -1,6 +1,6 @@
 # My Demo App
 
-A simple app for demoing basic cargo-dist usage
+A simple app for demoing basic cargo-dist usage.
 
 The project was created with
 
